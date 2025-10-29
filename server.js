@@ -13,6 +13,14 @@ const PORT = process.env.PORT || 3000;
 const connectDB = require('./config/db');
 connectDB();
 
+// Log mongoose connection events so we can see connection status in Render logs
+mongoose.connection.on('connected', () => {
+  console.log('Mongoose connected');
+});
+mongoose.connection.on('error', (err) => {
+  console.error('Mongoose connection error:', err);
+});
+
 // view engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -50,6 +58,7 @@ app.use('/cart', require('./routes/cart'));
 app.use('/admin', require('./routes/admin'));
 app.use('/auth', require('./routes/auth'));
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+// Bind to 0.0.0.0 so platform port scanning can detect the open port
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on http://0.0.0.0:${PORT}`);
 });
