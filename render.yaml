@@ -1,6 +1,4 @@
 services:
   - type: web
     name: groce-store
-    runtime: node
-    buildCommand: npm install
-    startCommand: node server.js
+    runtime: docker
